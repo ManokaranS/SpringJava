@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans> 
+	
+<bean id="factory" class="Servion.MavenProject.BSF"/>
+<bean id="shop" class="Servion.MavenProject.RamuShoeShop">
+<property name="factory">
+<ref bean="factory"/> 
+
+</property>	
+</bean>
+
+<bean id="LoggerAdvice" class="Servion.MavenProject.LoggerAdvice"/>
+<bean id="myaroundadvice" class="Servion.MavenProject.MyAroundAdvice"/>
+<bean id="myexceptionadvice" class="Servion.MavenProject.MyExceptionAdvice"/>
+
+<bean id="advisedshop" class="org.springframework.aop.framework.ProxyFactoryBean">
+<property name="proxyInterfaces">
+
+<value>Servion.MavenProject.Seller</value>
+
+</property>
+
+<property name="interceptorNames">
+<list>
+<value>LoggerAdvice</value>
+<value>myexceptionadvice</value>
+<value>myaroundadvice</value>
+</list>
+</property>
+
+<property name="target">
+
+<ref bean="shop"/>
+
+</property>
+
+</bean>
+
+</beans>
